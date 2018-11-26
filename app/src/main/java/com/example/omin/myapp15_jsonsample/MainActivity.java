@@ -19,18 +19,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ((Button)findViewById(R.id.button)).setOnClickListener(this);
+        ((Button)findViewById(R.id.button1)).setOnClickListener(this);
+        ((Button)findViewById(R.id.button2)).setOnClickListener(this);
+        ((Button)findViewById(R.id.button3)).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         DataDTO dto = null;
         OpenDataTask task = new OpenDataTask();
+        String did = "";
+        switch (v.getId()) {
+            case R.id.button1: did = "DID00001"; break;
+            case R.id.button2: did = "DID00002"; break;
+            case R.id.button3: did = "DID00003"; break;
+        }
+
         try {
-            dto = task.execute("DID00001").get();
+            dto = task.execute(did).get();
         } catch(Exception e) {
             e.printStackTrace();
         }
+        if(dto == null) return;
+
         ((TextView)findViewById(R.id.dustView)).setText("미세먼지 : "+dto.dust);
         ((TextView)findViewById(R.id.temperView)).setText("온도 : "+dto.temper);
         ((TextView)findViewById(R.id.humView)).setText("습도 : "+dto.humil);
